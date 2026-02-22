@@ -1,0 +1,72 @@
+float num1
+float num2
+float result
+str operation
+str again
+
+action Start()
+    start action == Calculator
+
+action Calculator()
+    CLEAR_SCREEN
+    SHOW_TEXT_COMM == "===== CALCULATOR ====="
+    SHOW_TEXT_COMM == "Enter the first number:"
+    WAIT_INPUT_COMM == "num1"
+
+    SHOW_TEXT_COMM == "Enter an operation (+, -, *, /) or exit to quit:"
+    WAIT_INPUT_COMM == "operation"
+
+    IF operation == "exit" GOTO end_program
+
+    SHOW_TEXT_COMM == "Enter the second number:"
+    WAIT_INPUT_COMM == "num2"
+
+    num1 == float(num1)
+    num2 == float(num2)
+
+    IF operation == "+" GOTO add
+    IF operation == "-" GOTO sub
+    IF operation == "*" GOTO mul
+    IF operation == "/" GOTO div
+
+    SHOW_TEXT_COMM == "Unknown operation"
+    GOTO ask_again
+
+LABEL add
+    result == num1 + num2
+    GOTO show_result
+
+LABEL sub
+    result == num1 - num2
+    GOTO show_result
+
+LABEL mul
+    result == num1 * num2
+    GOTO show_result
+
+LABEL div
+    IF num2 == 0 GOTO div_error
+    result == num1 / num2
+    GOTO show_result
+
+LABEL div_error
+    SHOW_TEXT_COMM == "Error: division by zero"
+    GOTO ask_again
+
+LABEL show_result
+    SHOW_TEXT_COMM == "Result: {result}"
+
+LABEL ask_again
+    SHOW_TEXT_COMM == "Continue? (y/n)"
+    WAIT_INPUT_COMM == "again"
+
+    IF again == "y" GOTO restart
+    IF again == "Y" GOTO restart
+    GOTO end_program
+
+LABEL restart
+    start action == Calculator
+
+LABEL end_program
+    SHOW_TEXT_COMM == "Program terminated"
+    WAIT 1f, APP.QUIT
